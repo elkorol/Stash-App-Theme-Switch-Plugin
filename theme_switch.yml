@@ -1,0 +1,7 @@
+name: Theme Switch
+description: Blurs covers and images
+url: 
+version: 1.0
+ui:
+  javascript:
+  - theme.js
