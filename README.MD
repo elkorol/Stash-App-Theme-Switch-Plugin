@@ -8,6 +8,10 @@ Clicking on any radio/checkbox to apply the CSS, saves the CSS content of the St
 
 Under Change Order of Menu Bar, you can drag the elements to reorder the main menu and upon dropping it will generate the required CSS. It should work on touchscreens also, tested on Chrome IOS.
 
+![Theme Plugin 1](https://github.com/elkorol/Stash-App-Theme-Switch-Plugin/blob/193f54fce3914991440027c4b98fd30aa9402d29/images/1.png)
+
+![Theme Plugin 2](https://github.com/elkorol/Stash-App-Theme-Switch-Plugin/blob/193f54fce3914991440027c4b98fd30aa9402d29/images/2.png)
+
 ## Other Requirements
 
 This plugin requires the feature of Stash - Custom Served Folders, to serve the stylesheets to stash. More here > [Advanced Configuration Options](https://github.com/stashapp/stash/wiki/Advanced-Configuration-Options), and here, [Add custom served folders](https://github.com/stashapp/stash/pull/620)
@@ -29,7 +33,7 @@ custom_served_folders:
 
 ```yaml
 custom_served_folders:
-  /themeswitch: C:\Stash\plugins\theme_switch\assets
+  /themeswitch: C:\Stash\plugins\Stash-App-Theme-Switch-Plugin\assets
 ```
 
 4. Open theme.js and edit STASHURL variable at the top to suit your configuration. If leaving it as localhost and accessing Stash on a third party device on your network via IP address, it will not work unless you set the variable to that IP address or if you have a custom domain/host setup
