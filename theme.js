@@ -227,6 +227,12 @@
       href: CSS + "tags/" + "differentTagCardsLayout.css",
       shortname: "Style-Plugin-CSS-differentTagCardsLayout",
     },
+    {
+      category: "Tags",
+      name: "Hide Tag Images",
+      href: CSS + "tags/" + "hideTagImages.css",
+      shortname: "Style-Plugin-CSS-hideTagImages",
+    },
   ];
 
   var CATEGORYORDER = [
