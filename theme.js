@@ -34,6 +34,12 @@
     },
     {
       category: "Themes",
+      name: "Neon Dark",
+      href: CSS + "Themes/" + "neondark.css",
+      shortname: "Style-Plugin-Theme-Neon-Dark",
+    },
+    {
+      category: "Themes",
       name: "Night",
       href: CSS + "Themes/" + "night.css",
       shortname: "Style-Plugin-Theme-Night",
@@ -43,6 +49,12 @@
       name: "Plex",
       href: CSS + "Themes/" + "plex.css",
       shortname: "Style-Plugin-Theme-Plex",
+    },
+    {
+      category: "Themes",
+      name: "Pornhub",
+      href: CSS + "Themes/" + "pornhub.css",
+      shortname: "Style-Plugin-Theme-Pornhub",
     },
     {
       category: "Themes",
@@ -222,6 +234,18 @@
       shortname: "Style-Plugin-CSS-differentStudioCardsLayout",
     },
     {
+      category: "Studios",
+      name: "More studios per row",
+      href: CSS + "studios/" + "moreStudiosPerRow.css",
+      shortname: "Style-Plugin-CSS-moreStudiosPerRow",
+    },
+    {
+      category: "Tags",
+      name: "Alternative tag layout",
+      href: CSS + "tags/" + "alternativeTagLayout.css",
+      shortname: "Style-Plugin-CSS-alternativeTagLayout",
+    },
+    {
       category: "Tags",
       name: "Different tag cards layout",
       href: CSS + "tags/" + "differentTagCardsLayout.css",
@@ -232,6 +256,12 @@
       name: "Hide Tag Images",
       href: CSS + "tags/" + "hideTagImages.css",
       shortname: "Style-Plugin-CSS-hideTagImages",
+    },
+    {
+      category: "Tags",
+      name: "Subtag explorer",
+      href: CSS + "tags/" + "subTagExplorer.css",
+      shortname: "Style-Plugin-CSS-subTagExplorer",
     },
   ];
 
