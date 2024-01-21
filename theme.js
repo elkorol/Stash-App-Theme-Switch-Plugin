@@ -1,5 +1,5 @@
 (function () {
-  const STASHURL = "http://localhost:9999";
+  const STASHURL = "http://localhost:9998";
   const ROOT = "/custom/themeswitch/";
   const CSS = STASHURL + ROOT + "css/";
   const LIBURL = STASHURL + ROOT + "lib/";
@@ -69,6 +69,12 @@
       shortname: "Style-Plugin-Theme-PulsarLight",
     },
     {
+      category: "Themes",
+      name: "Rounded Yellow",
+      href: CSS + "Themes/" + "roundedyellow.css",
+      shortname: "Style-Plugin-Theme-RoundedYellow",
+    },
+    {
       category: "Change Order of Menu Bar",
       name: "Change the order of navigation bar buttons",
       href: null,
@@ -128,6 +134,13 @@
       name: "Better Movie layout for desktops: Larger size poster",
       href: CSS + "movies/" + "betterMovieLayoutForDesktop2.css",
       shortname: "Style-Plugin-CSS-betterMovieLayoutForDesktop2",
+    },
+    {
+      category: "Change Order of Performer Edit Panel",
+      name: "Change the order of navigation bar buttons",
+      href: null,
+      shortname: "Style-Plugin-CSS-changeOrderOfNavButtons",
+      instructions: "Drag and drop the buttons to change the order",
     },
     {
       category: "Performers",
@@ -202,6 +215,12 @@
       name: "Longer string when displaying 'Studio as Text' on scene thumbnails",
       href: CSS + "scenes/" + "studioAsTextThumbsLongerString.css",
       shortname: "Style-Plugin-CSS-studioAsTextThumbsLongerString",
+    },
+    {
+      category: "Scenes",
+      name: "Show extra scene info",
+      href: CSS + "scenes/" + "extraSceneInfo.css",
+      shortname: "Style-Plugin-CSS-extraSceneInfo",
     },
     {
       category: "Scenes",
