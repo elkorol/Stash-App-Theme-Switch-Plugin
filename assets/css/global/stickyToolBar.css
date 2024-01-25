@@ -1,0 +1,10 @@
+/* [Global changes] Make the Toolbar Sticky */
+
+.justify-content-center.btn-toolbar {
+    position: sticky;
+    top: 40px;
+    z-index: 100;
+    background-color: #202b33;
+    padding: 12px;
+    padding-bottom: 1px;
+  }

@@ -112,6 +112,12 @@
       shortname: "Style-Plugin-CSS-hideDonateButton",
     },
     {
+      category: "Global",
+      name: "Sticky Toolbar",
+      href: CSS + "global/" + "stickyToolBar.css",
+      shortname: "Style-Plugin-CSS-stickyToolBar",
+    },
+    {
       category: "Images",
       name: "Disable Lightbox Annimation",
       href: CSS + "images/" + "disableLightBox.css",
