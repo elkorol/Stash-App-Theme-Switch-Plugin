@@ -1,5 +1,19 @@
 (function () {
-  const STASHURL = "http://localhost:9998";
+
+  function getDomainOrPort() {
+    // Get the hostname from the URL
+    const hostname = window.location.hostname;
+  
+    // Check if the hostname is localhost
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return window.location.hostname + ':' + window.location.port;
+    } else {
+      const domainParts = hostname.split('.');
+      return domainParts.slice(0, domainParts.length - 1).join('.');
+    }
+  }  
+console.log(window.location)
+  const STASHURL = getDomainOrPort();
   const ROOT = "/custom/themeswitch/";
   const CSS = STASHURL + ROOT + "css/";
   const LIBURL = STASHURL + ROOT + "lib/";
@@ -541,6 +555,7 @@
   }
 
   function themeSwitch_createbutton() {
+    waitForElementClass("top-nav", function () {
     if (!document.getElementById("plugin_theme")) {
       const plugin_div = document.createElement("div");
       plugin_div.className = "mr-2 dropdown";
@@ -552,7 +567,7 @@
       const themes_div = document.createElement("div");
       themes_div.className = "dropdown-menu";
       themes_div.style =
-        "position: absolute; top: 0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
+        "position: absolute; to0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
 
       document.addEventListener("click", function (event) {
         const isClickInside =
@@ -566,17 +581,17 @@
           plugin_theme.setAttribute("aria-expanded", "false");
           themes_div.classList.remove("show");
           themes_div.style =
-            "position: absolute; top: 0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
+            "position: absolute; to0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
         } else if (!expanded && isClickInside) {
           plugin_theme.setAttribute("aria-expanded", "true");
           themes_div.classList.add("show");
           themes_div.style =
-            "position: absolute; top: 133%; left: 0px; margin: 0px; opacity: 1; pointer-events: auto; width: max-content; min-width: 20rem; left: -575%;";
+            "position: absolute; to133%; left: 0px; margin: 0px; opacity: 1; pointer-events: auto; width: max-content; min-width: 20rem; left: -575%;";
         } else if (!isClickInside && !isClickInsideThemesDiv) {
           plugin_theme.setAttribute("aria-expanded", "false");
           themes_div.classList.remove("show");
           themes_div.style =
-            "position: absolute; top: 0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
+            "position: absolute; to0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
         }
       });
 
@@ -805,6 +820,7 @@
         main_Div.insertBefore(plugin_div, secondLastChild);
       });
     }
+  });
   }
 
   function enableDragSort(listClass) {
@@ -933,7 +949,8 @@
     enableDragSort("draggable-ul-container");
   });
 
-  window.addEventListener("load", function () {
+
+  function init () {
     // Apply Defualt Plugin CSS
     function loadDefaultCSS(i) {
       const defaultCSS = JSON.parse(
@@ -951,7 +968,7 @@
           LIBRARIES[i].category,
           LIBRARIES[i].href,
           LIBRARIES[i].shortname,
-          "false"
+          "true"
         );
         setTimeout(() => {
           loadDefaultCSS(i);
@@ -1006,19 +1023,32 @@
         setDefaultActive
       );
     }
-  });
+  };
 
-  function waitForElementClass(elementId, callBack, time) {
-    time = typeof time !== "undefined" ? time : 100;
-    window.setTimeout(function () {
-      var element = document.getElementsByClassName(elementId);
-      if (element.length > 0) {
-        callBack(elementId, element);
-      } else {
-        waitForElementClass(elementId, callBack);
-      }
-    }, time);
+  const StashPages = [
+      "stash:page:scenes",
+      "stash:page:scene",
+      "stash:page:images",
+      "stash:page:image",
+      "stash:page:movies",
+      "stash:page:movie",
+      "stash:page:markers",
+      "stash:page:galleries",
+      "stash:page:performers",
+      "stash:page:performer",
+      "stash:page:studios",
+      "stash:page:studio",
+      "stash:page:tags",
+      "stash:page:tag",
+      "stash:page:settings",
+      "stash:page:stats",
+      "stash:page:home"
+  ];
+
+  for (var i = 0; i < StashPages.length; i++) {
+    stash.addEventListener(StashPages[i], function () {
+      themeSwitch_createbutton();
+      init();
+    });
   }
-
-  themeSwitch_createbutton();
 })();
