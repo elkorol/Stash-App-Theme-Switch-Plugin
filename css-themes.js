@@ -7616,7 +7616,7 @@ button.clearable-text-field-clear.btn.btn-secondary:focus-visible {
     background-color: rgb(var(--on-tertiary-container));
     height: 24px;
     width: 24px;
-    content: "\2714";
+    content: "\xB9";
     color: rgb(var(--tertiary));
     font-size: 20px;
     border:0;
@@ -11792,7 +11792,7 @@ button#parser-field-select.dropdown-toggle.btn.btn-primary {
 }
 
 .modifier-options button.modifier-option.selected::before {
-    content: "\2713";
+    content: "\xb9";
     font-family: var(--UnicodeFont);
     font-weight: 500;
     font-size: 18px;
@@ -11870,7 +11870,7 @@ button#parser-field-select.dropdown-toggle.btn.btn-primary {
 }
 /* Folder-List Unicode Characters */
 .criterion-editor .folder-list-item .btn span::before {
-    content: "\251c \1F5BF";
+    content: "\xa9 \x01F5BF";
     font-size: 20px;
     color: rgb(var(--on-surface-variant));
     padding-right: 16px;
@@ -12139,7 +12139,7 @@ button.btn.btn-primary.btn-sm:last-child {
     transition: border-color 0.35s, background-color 0.55s;
 }
 .form-check > input[type="checkbox"] + label::after {
-    content: "\2714";
+    content: "\xb9";
     display: block;
     position: absolute;
     font-size: 18px;
@@ -12159,7 +12159,7 @@ button.btn.btn-primary.btn-sm:last-child {
     color: rgb(var(--on-sec));
 }
 .form-check > input[type="checkbox"]:indeterminate + label::after {
-    content: "\223D";
+    content: "\x93D";
 }
 .form-check:hover > input[type="checkbox"] {
     opacity: 0.24;
@@ -21078,6 +21078,14 @@ const themeSwitchCSS = {
       version: "0.1",
     },
   },
+  Menu: {
+    1: {
+      displayName: "Change Order of Menu Bar",
+      styles: null,
+      key: "themeSwitchPlugin-menu-changeOrderOfNavButtons",
+      version: null,
+    },
+},
   Galleries: {
     1: {
       displayName: "Grid View",
