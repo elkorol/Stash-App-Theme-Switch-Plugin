@@ -449,10 +449,10 @@
         pluginDiv.append(themesDiv);
 
         waitForElementClass("navbar-buttons", function () {
-          const main_Div = document.getElementsByClassName("navbar-buttons")[0];
+          const mainDiv = document.getElementsByClassName("navbar-buttons")[0];
           const secondLastChild =
-            main_Div.childNodes[main_Div.childNodes.length - 4];
-          main_Div.insertBefore(plugin_div, secondLastChild);
+            mainDiv.childNodes[mainDiv.childNodes.length - 4];
+          mainDiv.insertBefore(pluginDiv, secondLastChild);
         });
       }
     });
@@ -541,7 +541,7 @@
       buildDraggableCSS(
         "Change the order of navigation bar buttons",
         "Change Order of Menu Bar",
-        "Style-Plugin-CSS-changeOrderOfNavButtons"
+        "themeSwitchPlugin-menu-changeOrderOfNavButtons"
       );
     }, 100);
   }
@@ -571,7 +571,7 @@
       buildDraggableCSS(
         "Change the order of navigation bar buttons",
         "Change Order of Menu Bar",
-        "Style-Plugin-CSS-changeOrderOfNavButtons"
+        "themeSwitchPlugin-menu-changeOrderOfNavButtons"
       );
     }, 100);
   }

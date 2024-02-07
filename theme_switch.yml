@@ -7,5 +7,6 @@ ui:
   - StashUserscriptLibrary
   javascript:
   - theme.js
+  - css-themes.js
   css:
   - themePluginDefault.css
