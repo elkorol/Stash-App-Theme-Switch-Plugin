@@ -438,7 +438,6 @@
               // Loop over themes in each category
               Object.entries(themesInCategory).forEach(([themeId, theme]) => {
                 if (category === "Navigation") {
-                  // menuOrder(category, theme.key, optionListFilter);
                 } else {
                   const forRow = document.createElement("div");
                   forRow.className = "checkbox-switch-form-row";

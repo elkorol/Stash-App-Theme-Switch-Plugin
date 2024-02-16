@@ -1,8 +1,16 @@
 # Stash Theme / CSS Switcher
 
+## Further development here inactive.
+
+Preffered method to install is now using the plugin system in Stash head over to [CommunityScripts](https://github.com/stashapp/CommunityScripts)
+
 ## New version 2.0
 
 The new version no longer requires custom served folders to load CSS from. All CSS is side loaded through an additional Javascript file.
+
+## Note
+
+I am going to create this as a branch of the [CommunityScripts](https://github.com/stashapp/CommunityScripts) repo and pull request it in, so it might be preferrable to wait to see if it gets accepted there.
 
 ## Information about plugin
 
