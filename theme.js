@@ -51,7 +51,7 @@
     }
   }
 
-  function buildDraggableCSS(themename, category, key) {
+  function buldDragCSS(themename, key) {
     const container = document.querySelector(".draggable-ul-container");
     const list = container.querySelectorAll("li");
     let css = "";
@@ -91,105 +91,238 @@
     menuOrderResetButton(container.parentElement);
   }
 
-  function createLocalStorageObj(key, active) {
-    localStorage.setItem(key, JSON.stringify({ active: active, key: key }));
+  function enableDragSort(listClass) {
+    const sortableLists = document.getElementsByClassName(listClass);
+    Array.prototype.map.call(sortableLists, (list) => {
+      enableDragList(list);
+    });
   }
 
-  function checkCSSActive(key) {
-    let object = JSON.parse(localStorage.getItem(key));
-    if (object) {
-      if (object.applied === true || object.applied === "true") {
-        return true;
-      } else if (object.applied === false || object.applied === "false") {
-        return false;
-      } else {
-        return false;
+  function enableDragList(list) {
+    Array.prototype.map.call(list.children, (item) => {
+      enableDragItem(item);
+    });
+  }
+
+  function enableDragItem(item) {
+    item.setAttribute("draggable", true);
+    item.addEventListener("touchstart", handleTouchStart, { passive: true });
+    item.addEventListener("touchmove", handleTouchMove, { passive: true });
+    item.addEventListener("touchend", handleTouchEnd, { passive: true });
+    item.ondrag = handleDrag;
+    item.ondragend = handleDrop;
+  }
+
+  let touchEndY = null;
+
+  function handleTouchStart(event) {
+    event.preventDefault();
+    touchStartY = event.touches[0].clientY;
+  }
+
+  function handleTouchMove(event) {
+    event.preventDefault();
+    touchEndY = event.changedTouches[0].clientY;
+    const selectedItem = event.target,
+      list = selectedItem.parentNode;
+    selectedItem.classList.add("drag-sort-active");
+    let swapItem =
+      document.elementFromPoint(
+        selectedItem.getBoundingClientRect().x,
+        touchEndY
+      ) === null
+        ? selectedItem
+        : document.elementFromPoint(
+            selectedItem.getBoundingClientRect().x,
+            touchEndY
+          );
+
+    if (list === swapItem.parentNode) {
+      swapItem =
+        swapItem !== selectedItem.nextSibling ? swapItem : swapItem.nextSibling;
+      list.insertBefore(selectedItem, swapItem);
+    }
+  }
+
+  function handleTouchEnd(event) {
+    event.preventDefault();
+    touchEndY = event.changedTouches[0].clientY;
+    handleDragTouch(event.target);
+  }
+
+  function handleDragTouch(item) {
+    const selectedItem = item,
+      list = selectedItem.parentNode;
+    selectedItem.classList.remove("drag-sort-active");
+    let swapItem =
+      document.elementFromPoint(
+        selectedItem.getBoundingClientRect().x,
+        touchEndY
+      ) === null
+        ? selectedItem
+        : document.elementFromPoint(
+            selectedItem.getBoundingClientRect().x,
+            touchEndY
+          );
+
+    if (list === swapItem.parentNode) {
+      swapItem =
+        swapItem !== selectedItem.nextSibling ? swapItem : swapItem.nextSibling;
+      list.insertBefore(selectedItem, swapItem);
+    }
+    setTimeout(() => {
+      buldDragCSS(
+        "Change the order of navigation bar buttons",
+        "themeSwitchPlugin-menu-changeOrderOfNavButtons"
+      );
+    }, 100);
+  }
+
+  function handleDrag(item) {
+    const selectedItem = item.target,
+      list = selectedItem.parentNode,
+      x = event.clientX,
+      y = event.clientY;
+
+    selectedItem.classList.add("drag-sort-active");
+    let swapItem =
+      document.elementFromPoint(x, y) === null
+        ? selectedItem
+        : document.elementFromPoint(x, y);
+
+    if (list === swapItem.parentNode) {
+      swapItem =
+        swapItem !== selectedItem.nextSibling ? swapItem : swapItem.nextSibling;
+      list.insertBefore(selectedItem, swapItem);
+    }
+  }
+
+  function handleDrop(item) {
+    item.target.classList.remove("drag-sort-active");
+    setTimeout(() => {
+      buldDragCSS(
+        "Change the order of navigation bar buttons",
+        "themeSwitchPlugin-menu-changeOrderOfNavButtons"
+      );
+    }, 100);
+  }
+
+  (() => {
+    enableDragSort("drag-sort-enable");
+  })();
+
+  waitForElementClass("draggable-ul-container", function () {
+    enableDragSort("draggable-ul-container");
+  });
+
+  function setObject(key, category, active) {
+    return new Promise((resolve, reject) => {
+      try {
+        localStorage.setItem(
+          key,
+          JSON.stringify({ category: category, active: active })
+        );
+        resolve();
+      } catch (error) {
+        reject(error);
       }
+    });
+  }
+
+  function checkActive(key) {
+    let object = JSON.parse(localStorage.getItem(key));
+    if (object && object.active === true) {
+        return true;
     } else {
       return false;
     }
   }
 
-  function applyCSSMain(name, category, key, CSSHREF, applyStyle) {
+  function applyCSS(category, key, css, applyStyle) {
     if (category === "Themes") {
       // Turn Off old Theme
       let regex = /(themeSwitchPlugin-theme-.*)/;
+
       for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        let match = key.match(regex);
-        if (match) {
-          let object = JSON.parse(localStorage.getItem(key));
-          object.applied = "false";
-          let element = document.getElementById(key);
-          if (element) {
-            element.remove();
+        let storageKey = localStorage.key(i);
+        console.log(storageKey);
+
+        let match = storageKey.match(regex);
+        if (match && storageKey !== key) {
+          let object = JSON.parse(localStorage.getItem(storageKey));
+          console.log(object);
+         if (object.active) {
+            object.active = false;
+            localStorage.setItem(key, JSON.stringify(object));
+            let element = document.getElementById(key);
+            if (element) {
+              element.remove();
+            }
+
           }
-          localStorage.setItem(key, JSON.stringify(object));
         }
       }
 
       const theme = JSON.parse(localStorage.getItem(key));
-      if (!theme && key != "Style-Plugin-Theme-Default") {
-        createLocalStorageObj(name, category, CSSHREF, key, "true").then(() => {
-          const themeSelect = JSON.parse(localStorage.getItem(key));
-          const style = document.createElement("style");
-          style.type = "text/css";
-          style.id = key;
-          style.innerHTML = themeSelect.css;
-          document.getElementsByTagName("head")[0].appendChild(style);
+      if (!theme && key != "themeSwitchPlugin-theme-default") {
+        setObject(key, category, true).then(() => {
+          //   const themeSelect = JSON.parse(localStorage.getItem(key));
+          const styleElement = document.createElement("style");
+          styleElement.setAttribute("type", "text/css");
+          const cssTextNode = document.createTextNode(css);
+          styleElement.id = key;
+          styleElement.appendChild(cssTextNode);
+          document.getElementsByTagName("head")[0].appendChild(styleElement);
           return;
         });
-      } else if (!theme && key === "Style-Plugin-Theme-Default") {
-        createLocalStorageObj(key, category, null, key, "true");
-      } else if (theme && theme.key === "Style-Plugin-Theme-Default") {
-        theme.applied = "true";
+      } else if (!theme && key === "themeSwitchPlugin-theme-default") {
+        setObject(key, category, true);
+      } else if (theme && key === "themeSwitchPlugin-theme-default") {
+        theme.active = true;
         localStorage.setItem(key, JSON.stringify(theme));
-      } else if (theme && theme.key !== "Style-Plugin-Theme-Default") {
-        theme.applied = "true";
+      } else if (theme && key !== "themeSwitchPlugin-theme-default") {
+        theme.active = true;
         localStorage.setItem(key, JSON.stringify(theme));
-        const style = document.createElement("style");
-        style.type = "text/css";
-        style.id = key;
-        style.innerHTML = theme.css;
-        document.getElementsByTagName("head")[0].appendChild(style);
+        const styleElement = document.createElement("style");
+        styleElement.setAttribute("type", "text/css");
+        const cssTextNode = document.createTextNode(css);
+        styleElement.id = key;
+        styleElement.appendChild(cssTextNode);
+        document.getElementsByTagName("head")[0].appendChild(styleElement);
       }
     } else {
-      const css = JSON.parse(localStorage.getItem(key));
-      if (css) {
-        if (
-          applyStyle === "false" ||
-          applyStyle === false ||
-          applyStyle === undefined
-        ) {
-          if (css.applied === true || css.applied === "true") {
-            css.applied = "false";
-            localStorage.setItem(key, JSON.stringify(css));
+      const storageObject = JSON.parse(localStorage.getItem(key));
+      if (storageObject) {
+        if (applyStyle === false) {
+          if (storageObject.active === true) {
+            storageObject.active = "false";
+            localStorage.setItem(key, JSON.stringify(storageObject));
             document.getElementById(key).remove();
           } else {
-            css.applied = "true";
+            storageObject.active = true;
             localStorage.setItem(key, JSON.stringify(css));
             const style = document.createElement("style");
             style.type = "text/css";
             style.id = key;
-            style.innerHTML = css.css;
+            style.innerHTML = css;
             document.getElementsByTagName("head")[0].appendChild(style);
           }
         } else {
-          css.applied = "true";
-          localStorage.setItem(key, JSON.stringify(css));
+          storageObject.active = true;
+          localStorage.setItem(key, JSON.stringify(storageObject));
           const style = document.createElement("style");
           style.type = "text/css";
           style.id = key;
-          style.innerHTML = css.css;
+          style.innerHTML = css;
           document.getElementsByTagName("head")[0].appendChild(style);
         }
       } else {
-        createLocalStorageObj(key, category, CSSHREF, key, "true").then(() => {
-          const themeSelect = JSON.parse(localStorage.getItem(key));
+        setObject(key, category, true).then(() => {
+          //  const themeSelect = JSON.parse(localStorage.getItem(key));
           const style = document.createElement("style");
           style.type = "text/css";
           style.id = key;
-          style.innerHTML = themeSelect.css;
+          style.innerHTML = css;
           document.getElementsByTagName("head")[0].appendChild(style);
           return;
         });
@@ -234,9 +367,7 @@
             "</button>";
 
           const themesDiv = document.createElement("div");
-          themesDiv.className = "dropdown-menu";
-          themesDiv.style =
-            "position: absolute; to0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
+          themesDiv.className = "dropdown-menu theme-plugin-menu";
 
           document.addEventListener("click", function (event) {
             const isClickInside =
@@ -335,7 +466,7 @@
               // Loop over themes in each category
               Object.entries(themesInCategory).forEach(([themeId, theme]) => {
                 if (category === "Navigation") {
-                 // menuOrder(category, theme.key, optionListFilter);
+                  // menuOrder(category, theme.key, optionListFilter);
                 } else {
                   const forRow = document.createElement("div");
                   forRow.className = "checkbox-switch-form-row";
@@ -347,32 +478,27 @@
                   if (category === "Themes") {
                     input.type = "radio";
                     input.name = "themeGroup";
-                    const applied = checkCSSActive(theme.key, "Themes");
-                    input.checked = applied;
+                    const active = checkActive(theme.key);
+                    input.checked = active;
                   } else {
                     input.type = "checkbox";
-                    const applied = checkCSSActive(theme.key, "CSS");
-                    input.checked = applied;
+                    const active = checkActive(theme.key);
+                    input.checked = active;
                   }
-
                   const themeData = {
-                    name: theme.displayName,
                     category: category,
                     key: theme.key,
+                    css: theme.styles,
                   };
 
                   input.setAttribute("id", category + "-" + theme.key);
                   input.addEventListener(
                     "click",
-                    (function (themeData) {
+                    (function (category, key, css) {
                       return function () {
-                        applyCSSMain(
-                          themeData.name,
-                          themeData.category,
-                          themeData.key
-                        );
+                        applyCSS(category, key, css);
                       };
-                    })(themeData),
+                    })(themeData.category, themeData.key, themeData.css),
                     false
                   );
 
@@ -416,7 +542,8 @@
                         const name = "Markers";
                         navMenuItems.push({ name, key });
                       } else {
-                        const name = match[1].charAt(0).toUpperCase() + match[1].slice(1);
+                        const name =
+                          match[1].charAt(0).toUpperCase() + match[1].slice(1);
                         navMenuItems.push({ name, key });
                       }
                     }
@@ -433,26 +560,31 @@
                       { name: "Tags", key: "tags" },
                     ];
                   }
-                //  const label = document.createElement("label");
+                  //  const label = document.createElement("label");
                   legend.setAttribute("for", category + "-" + theme.key);
-                 optionListFilter.appendChild(legend);
+                  optionListFilter.appendChild(legend);
                   const formCheck = document.createElement("ul");
                   formCheck.className = "draggable-ul-container";
                   for (let i = 0; i < navMenuItems.length; i++) {
                     const li = document.createElement("li");
                     li.className = "draggable-li";
-                    li.setAttribute("data-rb-event-key", "/" + navMenuItems[i].key);
+                    li.setAttribute(
+                      "data-rb-event-key",
+                      "/" + navMenuItems[i].key
+                    );
                     li.setAttribute("draggable", true);
                     const newSpan = document.createElement("span");
                     newSpan.className = "grippy";
                     li.appendChild(newSpan);
-                    const textNode = document.createTextNode(navMenuItems[i].name);
+                    const textNode = document.createTextNode(
+                      navMenuItems[i].name
+                    );
                     li.appendChild(textNode);
                     formCheck.appendChild(li);
                   }
-              
+
                   optionListFilter.appendChild(formCheck);
-              
+
                   if (reset) {
                     menuOrderResetButton(optionListFilter);
                   }
@@ -462,7 +594,6 @@
                   accordion.append(categoryDiv);
                 }
               });
-
             }
           );
           themesDiv.append(accordion);
@@ -486,165 +617,53 @@
     });
   }
 
-  function enableDragSort(listClass) {
-    const sortableLists = document.getElementsByClassName(listClass);
-    Array.prototype.map.call(sortableLists, (list) => {
-      enableDragList(list);
-    });
-  }
-
-  function enableDragList(list) {
-    Array.prototype.map.call(list.children, (item) => {
-      enableDragItem(item);
-    });
-  }
-
-  function enableDragItem(item) {
-    item.setAttribute("draggable", true);
-    item.addEventListener("touchstart", handleTouchStart, { passive: true });
-    item.addEventListener("touchmove", handleTouchMove, { passive: true });
-    item.addEventListener("touchend", handleTouchEnd, { passive: true });
-    item.ondrag = handleDrag;
-    item.ondragend = handleDrop;
-  }
-
-  let touchEndY = null;
-
-  function handleTouchStart(event) {
-    event.preventDefault();
-    touchStartY = event.touches[0].clientY;
-  }
-
-  function handleTouchMove(event) {
-    event.preventDefault();
-    touchEndY = event.changedTouches[0].clientY;
-    const selectedItem = event.target,
-      list = selectedItem.parentNode;
-    selectedItem.classList.add("drag-sort-active");
-    let swapItem =
-      document.elementFromPoint(
-        selectedItem.getBoundingClientRect().x,
-        touchEndY
-      ) === null
-        ? selectedItem
-        : document.elementFromPoint(
-            selectedItem.getBoundingClientRect().x,
-            touchEndY
-          );
-
-    if (list === swapItem.parentNode) {
-      swapItem =
-        swapItem !== selectedItem.nextSibling ? swapItem : swapItem.nextSibling;
-      list.insertBefore(selectedItem, swapItem);
+  function returnCSS(key) {
+    for (const [, categoryThemes] of Object.entries(themeSwitchCSS)) {
+        for (const [, theme] of Object.entries(categoryThemes)) {
+            if (key === theme.key) {
+                return theme.styles;
+            }
+        }
     }
-  }
-
-  function handleTouchEnd(event) {
-    event.preventDefault();
-    touchEndY = event.changedTouches[0].clientY;
-    handleDragTouch(event.target);
-  }
-
-  function handleDragTouch(item) {
-    const selectedItem = item,
-      list = selectedItem.parentNode;
-    selectedItem.classList.remove("drag-sort-active");
-    let swapItem =
-      document.elementFromPoint(
-        selectedItem.getBoundingClientRect().x,
-        touchEndY
-      ) === null
-        ? selectedItem
-        : document.elementFromPoint(
-            selectedItem.getBoundingClientRect().x,
-            touchEndY
-          );
-
-    if (list === swapItem.parentNode) {
-      swapItem =
-        swapItem !== selectedItem.nextSibling ? swapItem : swapItem.nextSibling;
-      list.insertBefore(selectedItem, swapItem);
-    }
-    setTimeout(() => {
-      buildDraggableCSS(
-        "Change the order of navigation bar buttons",
-        "Change Order of Menu Bar",
-        "themeSwitchPlugin-menu-changeOrderOfNavButtons"
-      );
-    }, 100);
-  }
-
-  function handleDrag(item) {
-    const selectedItem = item.target,
-      list = selectedItem.parentNode,
-      x = event.clientX,
-      y = event.clientY;
-
-    selectedItem.classList.add("drag-sort-active");
-    let swapItem =
-      document.elementFromPoint(x, y) === null
-        ? selectedItem
-        : document.elementFromPoint(x, y);
-
-    if (list === swapItem.parentNode) {
-      swapItem =
-        swapItem !== selectedItem.nextSibling ? swapItem : swapItem.nextSibling;
-      list.insertBefore(selectedItem, swapItem);
-    }
-  }
-
-  function handleDrop(item) {
-    item.target.classList.remove("drag-sort-active");
-    setTimeout(() => {
-      buildDraggableCSS(
-        "Change the order of navigation bar buttons",
-        "Change Order of Menu Bar",
-        "themeSwitchPlugin-menu-changeOrderOfNavButtons"
-      );
-    }, 100);
-  }
-
-  (() => {
-    enableDragSort("drag-sort-enable");
-  })();
-
-  waitForElementClass("draggable-ul-container", function () {
-    enableDragSort("draggable-ul-container");
-  });
+}
 
   function init() {
     // Apply active Themes and stylesheets
     let selectedTheme;
 
-    let regex = /(themeSwitchPlugin(?!-theme-default).*)/;
-    let defaultRegex = /(themeSwitchPlugin-theme-default)/;
+    const regex = /(themeSwitchPlugin(?!-theme-default).*)/;
+    const defaultRegex = /(themeSwitchPlugin-theme-default)/;
     let defaultFound = false;
-    let AppliedThemeOtherThanDefault = [];
+    let appliedThemeOtherThanDefault = [];
+
     for (let i = 0; i < localStorage.length; i++) {
       let key = localStorage.key(i);
-      let match = key.match(regex);
       let defaultMatch = key.match(defaultRegex);
       if (defaultMatch) {
         defaultFound = true;
       }
+
+      let match = key.match(regex);
       if (match) {
         selectedTheme = JSON.parse(localStorage.getItem(key));
-        if (selectedTheme.active === true || selectedTheme.applied === "true") {
-          AppliedThemeOtherThanDefault.push("True");
-          applyCSSMain(selectedTheme.key, true);
+        if (selectedTheme.active === true) {
+          appliedThemeOtherThanDefault.push("True");
+          const css = returnCSS(key);
+          applyCSS(selectedTheme.category, key, css, true);
         }
       }
     }
 
     if (!defaultFound) {
       let setDefaultActive;
-      if (AppliedThemeOtherThanDefault.length > 0) {
-        setDefaultActive = "false";
+      if (appliedThemeOtherThanDefault.length > 0) {
+        setDefaultActive = false;
       } else {
-        setDefaultActive = "true";
+        setDefaultActive = true;
       }
-      createLocalStorageObj(
+      setObject(
         "themeSwitchPlugin-theme-default",
+        "Themes",
         setDefaultActive
       );
     }
@@ -674,12 +693,12 @@
     stash.addEventListener(StashPages[i], function () {
       createBTNMenu()
         .then(function () {
-          console.log("Menu created successfully");
-          init();
+          console.log("Theme Plugin: Menu created successfully");
         })
         .catch(function (error) {
-          console.error("Error creating menu:", error.message);
+          console.error("Theme Plugin: Error creating menu:", error.message);
         });
+      init();
     });
   }
 })();

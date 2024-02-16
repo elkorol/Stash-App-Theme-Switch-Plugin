@@ -78,7 +78,9 @@ span.drag-sort-active {
 .dropdown-menu {
   line-height: 1;
 }
-
+.theme-plugin-menu {
+  z-index: 9999999 !important;
+}
 /* CHECKBOX */
 .checkbox-switch input[type="checkbox"],
 .checkbox-switch input[type="radio"] {
