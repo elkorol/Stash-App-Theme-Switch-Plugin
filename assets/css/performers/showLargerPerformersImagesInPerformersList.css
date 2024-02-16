@@ -1,6 +1,0 @@
-/* [Performers tab] Show larger performer images in performers list. */
-/* original value: height: 30rem; min-width:13.25rem; */
-.performer-card-image{
-    height: 45rem;
-    min-width: 20rem;
-  }

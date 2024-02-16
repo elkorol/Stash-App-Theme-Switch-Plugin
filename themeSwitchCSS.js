@@ -21121,7 +21121,7 @@ const themeSwitchCSS = {
       version: null,
       hasSwitch: false,
     },
-},
+  },
   Galleries: {
     1: {
       displayName: "Grid View",
