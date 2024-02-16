@@ -197,67 +197,6 @@
     }
   }
 
-  function menuOrder(category, key, optionListFilter) {
-    // Check if the "CSS-changeOrderOfNavButtons" CSS is in localStorage
-    const draggableStylesheetContent = localStorage.getItem(
-      "themeSwitchPlugin-menu-changeOrderOfNavButtons"
-    );
-    if (draggableStylesheetContent) {
-      // Read the stylesheet content and create an array called "elements"
-      var reset = true;
-      var navMenuItems = [];
-      const css = JSON.parse(draggableStylesheetContent).css;
-      const regex = /data-rb-event-key="\/([^"]+)"/g;
-      let match;
-      while ((match = regex.exec(css))) {
-        const key = match[1];
-        if (match[1] === "scenes/markers") {
-          const name = "Markers";
-          navMenuItems.push({ name, key });
-        } else {
-          const name = match[1].charAt(0).toUpperCase() + match[1].slice(1);
-          navMenuItems.push({ name, key });
-        }
-      }
-      navMenuItems.sort((a, b) => a.order - b.order);
-    } else {
-      var navMenuItems = [
-        { name: "Scenes", key: "scenes" },
-        { name: "Images", key: "images" },
-        { name: "Movies", key: "movies" },
-        { name: "Markers", key: "scenes/markers" },
-        { name: "Galleries", key: "galleries" },
-        { name: "Performers", key: "performers" },
-        { name: "Studios", key: "studios" },
-        { name: "Tags", key: "tags" },
-      ];
-    }
-    const label = document.createElement("label");
-    label.setAttribute("for", category + "-" + key);
-    label.innerHTML = " Drag and drop the buttons to change the order";
-    optionListFilter.appendChild(label);
-    const formCheck = document.createElement("ul");
-    formCheck.className = "draggable-ul-container";
-    for (let i = 0; i < navMenuItems.length; i++) {
-      const li = document.createElement("li");
-      li.className = "draggable-li";
-      li.setAttribute("data-rb-event-key", "/" + navMenuItems[i].key);
-      li.setAttribute("draggable", true);
-      const newSpan = document.createElement("span");
-      newSpan.className = "grippy";
-      li.appendChild(newSpan);
-      const textNode = document.createTextNode(navMenuItems[i].name);
-      li.appendChild(textNode);
-      formCheck.appendChild(li);
-    }
-
-    optionListFilter.appendChild(formCheck);
-
-    if (reset) {
-      menuOrderResetButton(optionListFilter);
-    }
-  }
-
   function expandCollapse(category, name, span, collapse) {
     let categorySpanClick = document.getElementById(span);
     let categoryCollapseClick = document.getElementById(collapse);
@@ -396,7 +335,7 @@
               // Loop over themes in each category
               Object.entries(themesInCategory).forEach(([themeId, theme]) => {
                 if (category === "Navigation") {
-                  menuOrder(category, theme.key, optionListFilter);
+                 // menuOrder(category, theme.key, optionListFilter);
                 } else {
                   const forRow = document.createElement("div");
                   forRow.className = "checkbox-switch-form-row";
@@ -452,9 +391,80 @@
                   accordion.append(categoryDiv);
                 }
               });
+
+              Object.entries(themesInCategory).forEach(([themeId, theme]) => {
+                if (category === "Navigation") {
+                  const forRow = document.createElement("div");
+                  forRow.className = "switch-form-row";
+                  const legend = document.createElement("legend");
+                  legend.innerHTML = theme.displayName;
+                  legend.className = "legend-left";
+
+                  const draggableStylesheetContent = localStorage.getItem(
+                    "themeSwitchPlugin-menu-changeOrderOfNavButtons"
+                  );
+                  if (draggableStylesheetContent) {
+                    // Read the stylesheet content and create an array called "elements"
+                    var reset = true;
+                    var navMenuItems = [];
+                    const css = JSON.parse(draggableStylesheetContent).css;
+                    const regex = /data-rb-event-key="\/([^"]+)"/g;
+                    let match;
+                    while ((match = regex.exec(css))) {
+                      const key = match[1];
+                      if (match[1] === "scenes/markers") {
+                        const name = "Markers";
+                        navMenuItems.push({ name, key });
+                      } else {
+                        const name = match[1].charAt(0).toUpperCase() + match[1].slice(1);
+                        navMenuItems.push({ name, key });
+                      }
+                    }
+                    navMenuItems.sort((a, b) => a.order - b.order);
+                  } else {
+                    var navMenuItems = [
+                      { name: "Scenes", key: "scenes" },
+                      { name: "Images", key: "images" },
+                      { name: "Movies", key: "movies" },
+                      { name: "Markers", key: "scenes/markers" },
+                      { name: "Galleries", key: "galleries" },
+                      { name: "Performers", key: "performers" },
+                      { name: "Studios", key: "studios" },
+                      { name: "Tags", key: "tags" },
+                    ];
+                  }
+                //  const label = document.createElement("label");
+                  legend.setAttribute("for", category + "-" + theme.key);
+                 optionListFilter.appendChild(legend);
+                  const formCheck = document.createElement("ul");
+                  formCheck.className = "draggable-ul-container";
+                  for (let i = 0; i < navMenuItems.length; i++) {
+                    const li = document.createElement("li");
+                    li.className = "draggable-li";
+                    li.setAttribute("data-rb-event-key", "/" + navMenuItems[i].key);
+                    li.setAttribute("draggable", true);
+                    const newSpan = document.createElement("span");
+                    newSpan.className = "grippy";
+                    li.appendChild(newSpan);
+                    const textNode = document.createTextNode(navMenuItems[i].name);
+                    li.appendChild(textNode);
+                    formCheck.appendChild(li);
+                  }
+              
+                  optionListFilter.appendChild(formCheck);
+              
+                  if (reset) {
+                    menuOrderResetButton(optionListFilter);
+                  }
+                  fieldset.appendChild(forRow);
+                  optionListFilter.appendChild(fieldset);
+                  categoryDiv.append(categoryHeader);
+                  accordion.append(categoryDiv);
+                }
+              });
+
             }
           );
-
           themesDiv.append(accordion);
           pluginDiv.append(themesDiv);
 
@@ -473,189 +483,6 @@
           reject(new Error("Element already exists"));
         }
       });
-    });
-  }
-
-  function createBTNMenuOLD() {
-    waitForElementClass("top-nav", function () {
-      if (!document.getElementById("themeSwitchPlugin")) {
-        const pluginDiv = document.createElement("div");
-        pluginDiv.className = "mr-2 dropdown";
-        pluginDiv.innerHTML =
-          '<button id="themeSwitchPlugin" aria-haspopup="true" aria-expanded="false" type="button" class="dropdown-toggle minimal d-flex align-items-center h-100 btn btn-primary" title="Theme Switcher">' +
-          svgBTN +
-          "</button>";
-
-        const themesDiv = document.createElement("div");
-        themesDiv.className = "dropdown-menu";
-        themesDiv.style =
-          "position: absolute; to0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
-
-        document.addEventListener("click", function (event) {
-          const isClickInside =
-            pluginDiv.contains(event.target) ||
-            themesDiv.contains(event.target);
-          const isClickInsideThemesDiv = themesDiv.contains(event.target);
-          const themeSwitchPlugin =
-            document.getElementById("themeSwitchPlugin");
-          const expanded =
-            themeSwitchPlugin.getAttribute("aria-expanded") === "true";
-
-          if (expanded && !isClickInsideThemesDiv) {
-            themeSwitchPlugin.setAttribute("aria-expanded", "false");
-            themesDiv.classList.remove("show");
-            themesDiv.style =
-              "position: absolute; to0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
-          } else if (!expanded && isClickInside) {
-            themeSwitchPlugin.setAttribute("aria-expanded", "true");
-            themesDiv.classList.add("show");
-            themesDiv.style =
-              "position: absolute; to133%; left: 0px; margin: 0px; opacity: 1; pointer-events: auto; width: max-content; min-width: 20rem; left: -575%;";
-          } else if (!isClickInside && !isClickInsideThemesDiv) {
-            themeSwitchPlugin.setAttribute("aria-expanded", "false");
-            themesDiv.classList.remove("show");
-            themesDiv.style =
-              "position: absolute; to0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
-          }
-        });
-
-        const accordion = document.createElement("div");
-        accordion.className = "criterion-list accordion";
-        accordion.style = "max-width: 20rem !important;";
-        const header = document.createElement("div");
-        header.innerHTML = "Theme/CSS Switcher";
-        header.className = "modal-header";
-        accordion.append(header);
-
-        Object.entries(themeSwitchCSS).forEach(
-          ([category, themesInCategory], i) => {
-            const categoryDiv = document.createElement("div");
-            categoryDiv.className = "card";
-            categoryDiv.setAttribute("data-type", category);
-            categoryDiv.setAttribute(
-              "id",
-              "themeSwitchPlugin-card-" + category
-            );
-            categoryDiv.style = "padding: 2px !important;";
-            const categoryHeader = document.createElement("div");
-            categoryHeader.className = "card-header";
-            categoryHeader.style = "padding: 0.375rem 0.625rem !important;";
-            const categorySpan = document.createElement("span");
-            categorySpan.innerHTML = svgChevUP + category;
-            categorySpan.setAttribute(
-              "id",
-              "themeSwitchPlugin-span-" + category
-            );
-            const collapseDiv = document.createElement("div");
-            collapseDiv.className = "collapse";
-            collapseDiv.setAttribute("aria-expanded", "false");
-            collapseDiv.setAttribute(
-              "id",
-              "themeSwitchPlugin-collapse-" + category
-            );
-            categoryDiv.addEventListener(
-              "click",
-              (function () {
-                return function (event) {
-                  if (!event.target.closest(".collapse")) {
-                    expandCollapse(
-                      category,
-                      "themeSwitchPlugin-card-" + category,
-                      "themeSwitchPlugin-span-" + category,
-                      "themeSwitchPlugin-collapse-" + category
-                    );
-                  }
-                };
-              })(i),
-              { capture: true }
-            );
-
-            const cardBody = document.createElement("div");
-            cardBody.className = "card-body";
-            const editorDiv = document.createElement("div");
-            editorDiv.className = "criterion-editor";
-            const blankDiv = document.createElement("div");
-            const optionListFilter = document.createElement("div");
-            optionListFilter.className = "option-list-filter";
-            blankDiv.append(optionListFilter);
-            editorDiv.append(blankDiv);
-            cardBody.append(editorDiv);
-            collapseDiv.append(cardBody);
-            categoryHeader.append(categorySpan, collapseDiv);
-            const fieldset = document.createElement("fieldset");
-            fieldset.className = "checkbox-switch";
-
-            // Loop over themes in each category
-            Object.entries(themesInCategory).forEach(([themeId, theme]) => {
-              if (category === "Navigation") {
-                menuOrder(category, theme.key, optionListFilter);
-              } else {
-                const forRow = document.createElement("div");
-                forRow.className = "checkbox-switch-form-row";
-                var legend = document.createElement("legend");
-                legend.innerHTML = theme.displayName;
-                legend.className = "legend-right";
-                const input = document.createElement("input");
-
-                if (category === "Themes") {
-                  input.type = "radio";
-                  input.name = "themeGroup";
-                  const applied = checkCSSActive(theme.key, "Themes");
-                  input.checked = applied;
-                } else {
-                  input.type = "checkbox";
-                  const applied = checkCSSActive(theme.key, "CSS");
-                  input.checked = applied;
-                }
-
-                const themeData = {
-                  name: theme.displayName,
-                  category: category,
-                  key: theme.key,
-                };
-
-                input.setAttribute("id", category + "-" + theme.key);
-                input.addEventListener(
-                  "click",
-                  (function (themeData) {
-                    return function () {
-                      applyCSSMain(
-                        themeData.name,
-                        themeData.category,
-                        themeData.key
-                      );
-                    };
-                  })(themeData),
-                  false
-                );
-
-                const label = document.createElement("label");
-                label.setAttribute("for", category + "-" + theme.key);
-                label.title = "Turn " + theme.displayName + " on/off";
-                label.className = "checkbox-right";
-
-                // Append the legend, input, and label elements to the fieldset element
-                forRow.appendChild(legend);
-                forRow.appendChild(input);
-                forRow.appendChild(label);
-                fieldset.appendChild(forRow);
-                optionListFilter.appendChild(fieldset);
-                categoryDiv.append(categoryHeader);
-                accordion.append(categoryDiv);
-              }
-            });
-          }
-        );
-        themesDiv.append(accordion);
-        pluginDiv.append(themesDiv);
-
-        waitForElementClass("navbar-buttons", function () {
-          const mainDiv = document.getElementsByClassName("navbar-buttons")[0];
-          const secondLastChild =
-            mainDiv.childNodes[mainDiv.childNodes.length - 4];
-          mainDiv.insertBefore(pluginDiv, secondLastChild);
-        });
-      }
     });
   }
 

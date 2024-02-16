@@ -112,7 +112,27 @@ span.drag-sort-active {
   transform: translate(8px, 14px);
   position: unset;
 }
-
+.legend-left {
+  clear: both; /* fix for IE */
+  margin: 0;
+  padding: 0;
+  font-size: unset;
+  padding-inline-start: unset;
+  padding-inline-end: unset;
+  border-width: unset;
+  border-style: unset;
+  border-color: unset;
+  border-image: unset;
+  width: unset;
+  padding: 0;
+  font-size: unset;
+  margin-bottom: 10px;
+  font-weight: unset;
+  display: flex;
+  flex-direction: row;
+  align-items:  flex-end;
+  flex-grow: 1;
+}
 .legend-right {
   clear: both; /* fix for IE */
   margin: 0;
