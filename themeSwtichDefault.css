@@ -3,7 +3,6 @@
   margin: 0;
   padding: 0;
 }
-
 .draggable-li {
   padding: 0 20px;
   height: 40px;
@@ -31,7 +30,6 @@ li.drag-sort-active {
   opacity: 0.5;
   border: 1px solid #4ca1af;
 }
-
 span.grippy {
   content: "....";
   width: 10px;
@@ -53,17 +51,14 @@ span.grippy {
 span.grippy::after {
   content: ".. .. .. ..";
 }
-
 .dragging {
   opacity: 0.5;
 }
-
 li.drag-sort-active {
   background: transparent;
   color: transparent;
   border: 1px solid #4ca1af;
 }
-
 span.drag-sort-active {
   background: transparent;
   color: transparent;
@@ -74,7 +69,6 @@ span.drag-sort-active {
 #plugin_theme-menuOrderReset {
   margin-top: 10px;
 }
-
 .dropdown-menu {
   line-height: 1;
 }
@@ -92,7 +86,6 @@ span.drag-sort-active {
   flex-direction: column;
   justify-content: flex-end;
 }
-
 .checkbox-switch {
   margin: 0;
   padding: 0;
@@ -184,7 +177,6 @@ span.drag-sort-active {
 .checkbox-switch input[type="radio"] + label:after {
   display: none;
 }
-
 .checkbox-switch input[type="checkbox"]:checked + label:before,
 .checkbox-switch input[type="radio"]:checked + label:before {
   border-color: #00ac64;
@@ -192,7 +184,6 @@ span.drag-sort-active {
   text-align: right;
   color: white;
 }
-
 .checkbox-switch input[type="checkbox"] + label:active:before,
 .checkbox-switch input[type="checkbox"]:checked + label:active:before,
 .checkbox-switch input[type="radio"] + label:active:before,
@@ -209,7 +200,6 @@ span.drag-sort-active {
   display: flex;
   align-items: center;
 }
-
 .checkbox-switch a {
   text-decoration: none;
   font-weight: 500;
@@ -220,7 +210,6 @@ span.drag-sort-active {
   text-decoration: underline;
   color: #00ac64;
 }
-
 /* Overides */
 .checkbox-switch {
   margin-inline-start: unset !important;
@@ -232,25 +221,13 @@ span.drag-sort-active {
   display: flex;
   flex-direction: column;
 }
-/*
-.checkbox-switch input[type="checkbox"] + label {
-  position: relative;
-  left: -30px;
-}
-.checkbox-switch input[type="checkbox"], .checkbox-switch input[type="radio"] {
-  margin-right: 25px;
-
-}
-
-.checkbox-switch input, label, legend {
-  display: block;
-
-}
-*/
 .checkbox-switch-form-row {
   align-items: center;
   display: flex;
   flex-direction: row;
   margin-bottom: 10px;
   justify-content: right;
+}
+.top-nav:has(.dropdown-menu.theme-plugin-menu.show) {
+  overflow: visible !important;
 }

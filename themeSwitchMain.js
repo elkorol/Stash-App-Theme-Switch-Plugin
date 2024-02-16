@@ -360,12 +360,12 @@
               themeSwitchPlugin.setAttribute("aria-expanded", "true");
               themesDiv.classList.add("show");
               themesDiv.style =
-                "position: absolute; to133%; left: 0px; margin: 0px; opacity: 1; pointer-events: auto; width: max-content; min-width: 20rem; left: -575%;";
+                "position: absolute; top: 133%; left: 0px; margin: 0px; opacity: 1; pointer-events: auto; width: max-content; min-width: 20rem; left: -575%;";
             } else if (!isClickInside && !isClickInsideThemesDiv) {
               themeSwitchPlugin.setAttribute("aria-expanded", "false");
               themesDiv.classList.remove("show");
               themesDiv.style =
-                "position: absolute; to0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
+                "position: absolute; top: 0px; left: 0px; margin: 0px; opacity: 0; pointer-events: none;";
             }
           });
 

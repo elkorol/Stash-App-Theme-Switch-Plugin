@@ -3,7 +3,7 @@ description: Theme and CSS script manager located in main menu bar top right.
 url: 
 version: 2.0
 ui:
-  requires: 
+  requires:
   - StashUserscriptLibrary
   javascript:
   - themeSwitchMain.js
