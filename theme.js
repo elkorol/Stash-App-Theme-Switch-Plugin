@@ -232,99 +232,69 @@
   function checkActive(key) {
     let object = JSON.parse(localStorage.getItem(key));
     if (object && object.active === true) {
-        return true;
+      return true;
     } else {
       return false;
     }
   }
 
-  function applyCSS(category, key, css, applyStyle) {
+  function applyStyleToHead(key, css) {
+    const styleElement = document.createElement("style");
+    styleElement.setAttribute("type", "text/css");
+    const cssTextNode = document.createTextNode(css);
+    styleElement.id = key;
+    styleElement.appendChild(cssTextNode);
+    document.getElementsByTagName("head")[0].appendChild(styleElement);
+  }
+
+  function applyCSS(category, key, css, set) {
     if (category === "Themes") {
       // Turn Off old Theme
       let regex = /(themeSwitchPlugin-theme-.*)/;
 
       for (let i = 0; i < localStorage.length; i++) {
         let storageKey = localStorage.key(i);
-        console.log(storageKey);
-
         let match = storageKey.match(regex);
-        if (match && storageKey !== key) {
-          let object = JSON.parse(localStorage.getItem(storageKey));
-          console.log(object);
-         if (object.active) {
-            object.active = false;
-            localStorage.setItem(key, JSON.stringify(object));
-            let element = document.getElementById(key);
-            if (element) {
-              element.remove();
-            }
-
+        if (
+          match &&
+          storageKey !== key &&
+          JSON.parse(localStorage.getItem(storageKey)).active === true
+        ) {
+          setObject(storageKey, category, false);
+          let element = document.getElementById(storageKey);
+          if (element) {
+            element.remove();
           }
         }
       }
 
       const theme = JSON.parse(localStorage.getItem(key));
+
       if (!theme && key != "themeSwitchPlugin-theme-default") {
         setObject(key, category, true).then(() => {
-          //   const themeSelect = JSON.parse(localStorage.getItem(key));
-          const styleElement = document.createElement("style");
-          styleElement.setAttribute("type", "text/css");
-          const cssTextNode = document.createTextNode(css);
-          styleElement.id = key;
-          styleElement.appendChild(cssTextNode);
-          document.getElementsByTagName("head")[0].appendChild(styleElement);
-          return;
+          applyStyleToHead(key, css);
         });
       } else if (!theme && key === "themeSwitchPlugin-theme-default") {
         setObject(key, category, true);
       } else if (theme && key === "themeSwitchPlugin-theme-default") {
-        theme.active = true;
-        localStorage.setItem(key, JSON.stringify(theme));
+        setObject(key, category, true);
       } else if (theme && key !== "themeSwitchPlugin-theme-default") {
-        theme.active = true;
-        localStorage.setItem(key, JSON.stringify(theme));
-        const styleElement = document.createElement("style");
-        styleElement.setAttribute("type", "text/css");
-        const cssTextNode = document.createTextNode(css);
-        styleElement.id = key;
-        styleElement.appendChild(cssTextNode);
-        document.getElementsByTagName("head")[0].appendChild(styleElement);
+        setObject(key, category, true).then(() => {
+          applyStyleToHead(key, css);
+        });
       }
     } else {
+      // CSS Other than themes
       const storageObject = JSON.parse(localStorage.getItem(key));
-      if (storageObject) {
-        if (applyStyle === false) {
-          if (storageObject.active === true) {
-            storageObject.active = "false";
-            localStorage.setItem(key, JSON.stringify(storageObject));
-            document.getElementById(key).remove();
-          } else {
-            storageObject.active = true;
-            localStorage.setItem(key, JSON.stringify(css));
-            const style = document.createElement("style");
-            style.type = "text/css";
-            style.id = key;
-            style.innerHTML = css;
-            document.getElementsByTagName("head")[0].appendChild(style);
-          }
-        } else {
-          storageObject.active = true;
-          localStorage.setItem(key, JSON.stringify(storageObject));
-          const style = document.createElement("style");
-          style.type = "text/css";
-          style.id = key;
-          style.innerHTML = css;
-          document.getElementsByTagName("head")[0].appendChild(style);
-        }
-      } else {
+      if (!storageObject || storageObject.active === false) {
         setObject(key, category, true).then(() => {
-          //  const themeSelect = JSON.parse(localStorage.getItem(key));
-          const style = document.createElement("style");
-          style.type = "text/css";
-          style.id = key;
-          style.innerHTML = css;
-          document.getElementsByTagName("head")[0].appendChild(style);
-          return;
+          applyStyleToHead(key, css);
+        });
+      } else if (storageObject.active && !document.getElementById(key)) {
+        applyStyleToHead(key, css);
+      } else {
+        setObject(key, category, false).then(() => {
+          document.getElementById(key).remove();
         });
       }
     }
@@ -619,13 +589,13 @@
 
   function returnCSS(key) {
     for (const [, categoryThemes] of Object.entries(themeSwitchCSS)) {
-        for (const [, theme] of Object.entries(categoryThemes)) {
-            if (key === theme.key) {
-                return theme.styles;
-            }
+      for (const [, theme] of Object.entries(categoryThemes)) {
+        if (key === theme.key) {
+          return theme.styles;
         }
+      }
     }
-}
+  }
 
   function init() {
     // Apply active Themes and stylesheets
@@ -661,11 +631,7 @@
       } else {
         setDefaultActive = true;
       }
-      setObject(
-        "themeSwitchPlugin-theme-default",
-        "Themes",
-        setDefaultActive
-      );
+      setObject("themeSwitchPlugin-theme-default", "Themes", setDefaultActive);
     }
   }
 
