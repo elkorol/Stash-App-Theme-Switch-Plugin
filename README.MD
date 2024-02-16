@@ -29,6 +29,33 @@ Under Change Order of Menu Bar, you can drag the elements to reorder the main me
 
 The CSS code used is provided by [Stash Community Themes](https://docs.stashapp.cc/user-interface-ui/themes) and [Stash Community Custom CSS Snippets](https://docs.stashapp.cc/user-interface-ui/custom-css-snippets).
 
-## Possible Upgrades
+## Adding your own CSS
 
-Perhaps in future can build a makeshift Tampermonkey Style User Manager to handle scripts internally within Stash. Just need to code a way the userscripts are added last and any requires in the metadata block load before scripts and tagering which urls to be active upon.
+To add your own CSS open the themeSwitchCSS.js file. CSS is defined in const variables. They are ordered in categories. You can make your own categories too. Just define a variable to hold your css and put the css inbetween backticks ``.
+
+Then look for the variable themeSwitchCSS at the bottom of the file. If adding to an existing category to just add a new number at the end. Or if you are reordering the CSS or themes. Be sure to update the numbering and there is no duplicate numbers within a theme or some won't render. It's stuctured like but can be seen better within the file itself.
+
+const themeSwitchCSS = {
+Theme: {
+1: {
+displayName: "Default",
+styles: null,
+key: "themeSwitchPlugin-theme-default",
+version: null,
+},
+2: {
+displayName: "Black Hole",
+styles: blackHole,
+key: "themeSwitchPlugin-theme-blackHole",
+version: "2.0",
+}
+YourCategoryHere: {
+1: {
+displayName: "Your CSS Name Here",
+styles: Your-CSS-Variable-Name-Here,
+key: "themeSwitchPlugin-YourCategoryHere-AnIDforYourCSS",
+version: VersionNumberOrNull,
+}
+}
+}
+}

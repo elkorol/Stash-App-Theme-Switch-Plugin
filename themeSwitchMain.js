@@ -674,7 +674,6 @@
 
   for (var i = 0; i < StashPages.length; i++) {
     const page = StashPages[i];
-    stash.removeEventListener(page, createMenuAndInit); // Remove existing event listener
     stash.addEventListener(page, createMenuAndInit);
   }
 
