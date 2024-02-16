@@ -1,5 +1,11 @@
 # Stash Theme / CSS Switcher
 
+## New version 2.0
+
+The new version no longer requires custom served folders to load CSS from. All CSS is side loaded through an additional Javascript file.
+
+## Information about plugin
+
 Adds a button that shows a menu, allowing you to change CSS Themes and apply various CSS snippets for Stash App. The CSS isn't made by myself and in the CSS files authors where known are referenced.
 
 Only the CSS of one theme can be applied at a time, and any amount of snippets can be applied.
@@ -14,31 +20,10 @@ Under Change Order of Menu Bar, you can drag the elements to reorder the main me
 
 ## Other Requirements
 
-This plugin requires the feature of Stash - Custom Served Folders, to serve the stylesheets to stash. More here > [Advanced Configuration Options](https://github.com/stashapp/stash/wiki/Advanced-Configuration-Options), and here, [Add custom served folders](https://github.com/stashapp/stash/pull/620)
-
-It perhaps could have been done by referencing the CSS in the yml file but I couldn't figure out how to add more than one without them merging.
-
 ## Usage
 
 1. Copy repository into Stash plugins folder.
-2. Stop Stash from running and find and open config.yml
-3. Enter or add the relevent parts below, into config.yml
-
-```yaml
-custom_served_folders:
-  /themeswitch: [Path to where you copied the repository plugin]\assets
-```
-
-*I.E.*
-
-```yaml
-custom_served_folders:
-  /themeswitch: C:\Stash\plugins\Stash-App-Theme-Switch-Plugin\assets
-```
-
-4. Open theme.js and edit STASHURL variable at the top to suit your configuration. If leaving it as localhost and accessing Stash on a third party device on your network via IP address, it will not work unless you set the variable to that IP address or if you have a custom domain/host setup
-5. Start Stash, navigate to Settings > Plugins > Press Reload Plugins and refresh
-6. The Theme / CSS Switcher button should now be in the top right of the menu bar
+2. Reload plugins from settings and enable
 
 ## Credit
 

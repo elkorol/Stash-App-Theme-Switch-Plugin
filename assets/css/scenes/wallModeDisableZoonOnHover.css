@@ -1,8 +1,0 @@
-/* [Scenes tab] Disable zoom on hover in wall mode */
-
-.wall-item:hover .wall-item-container {
-    transform: none;
-}
-.wall-item:before {
-    opacity: 0 !important;
-}
