@@ -101,7 +101,7 @@ div.react-select__control {
 
 // Themes CSS Begin
 const glassy = `
-/* Glassy - A Window To Your Collection - A Stash Theme By Serechoo v 0.7.4*/
+/* Glassy - A Window To Your Collection - A Stash Theme By Serechoo Commit Hash: bde716b */
 /* General Styling */
 
 /* Common Styles */
@@ -161,6 +161,8 @@ div.changelog-version.card,
 }
 
 /* Popup Modal Styling - Settings Section - General "Dark Themed Glassy Look" */
+.detail-header.collapsed,
+.performer-head.col,
 .scene-card.zoom-1.grid-card.card,
 .performer-card.grid-card.card,
 .movie-card.grid-card.card,
@@ -278,6 +280,7 @@ nav.bg-dark {
 	overflow: hidden;
 	animation-play-state: running;
 }
+
 
 .movie-recommendations .slick-track:hover,
 .scene-recommendations .slick-track:hover,
@@ -399,7 +402,7 @@ nav.bg-dark {
 
 /* Add a background image to the existing background container */
 body {
-	background-image: url('https://images.hdqwalls.com/download/texture-dark-gradient-5k-px-2560x1440.jpg');
+	background-image: url('https://erowall.com/wallpapers/original/33330.jpg');
 	background-size: contain;
 	background-position: center;
 	background-attachment: fixed;
@@ -668,6 +671,38 @@ div.setting-section {
 	padding: 0;
 	margin: 0;
 	/* Optional: Remove any margin if applied by default */
+}
+
+/*Ratings Banner Color Overhaul*/
+
+/* Rating banner style for rating 1 */
+.rating-banner.rating-1 {
+    background-color: red;
+    color: black;
+}
+
+/* Rating banner style for rating 2 */
+.rating-banner.rating-2 {
+    background-color: orange;
+    color: black;
+}
+
+/* Rating banner style for rating 3 */
+.rating-banner.rating-3 {
+    background-color: yellow;
+    color: black;
+}
+
+/* Rating banner style for rating 4 */
+.rating-banner.rating-4 {
+    background-color: limegreen;
+    color: black;
+}
+
+/* Rating banner style for rating 5 */
+.rating-banner.rating-5 {
+    background-color: green;
+    color: black;
 }
 
 /*Mobile Overhaul*/
@@ -20998,48 +21033,48 @@ const themeSwitchCSS = {
       key: "themeSwitchPlugin-theme-materialize",
       version: null,
     },
-    4: {
+    5: {
       displayName: "Modern Dark",
       styles: modernDark,
       key: "themeSwitchPlugin-theme-modernDark",
       version: "1.2",
     },
-    5: {
+    6: {
       displayName: "Neon Dark",
       styles: neonDark,
       key: "themeSwitchPlugin-theme-neonDark",
       version: null,
     },
-    6: {
+    7: {
       displayName: "Night",
       styles: night,
       key: "themeSwitchPlugin-theme-night",
       version: 0.1,
     },
-    7: {
+    8: {
       displayName: "Plex",
       styles: plex,
       key: "themeSwitchPlugin-theme-plex",
       version: "1.0.3",
     },
-    8: {
+    9: {
       displayName: "Pornhub",
       styles: pornHub,
       key: "themeSwitchPlugin-theme-pornHub",
     },
-    9: {
+    10: {
       displayName: "Pulsar",
       styles: pulsar,
       key: "themeSwitchPlugin-theme-pulsar",
       version: "1.8.1",
     },
-    10: {
+    11: {
       displayName: "Pulsar Light",
       styles: pulsarLight,
       key: "themeSwitchPlugin-theme-pulsarLight",
       version: "0.3.1",
     },
-    11: {
+    12: {
       displayName: "Rounded Yellow",
       styles: roundedYellow,
       key: "themeSwitchPlugin-theme-roundedYellow",
@@ -21078,12 +21113,13 @@ const themeSwitchCSS = {
       version: "0.1",
     },
   },
-  Menu: {
+  Navigation: {
     1: {
-      displayName: "Change Order of Menu Bar",
+      displayName: "Change Order of Nav Items",
       styles: null,
       key: "themeSwitchPlugin-menu-changeOrderOfNavButtons",
       version: null,
+      hasSwitch: false,
     },
 },
   Galleries: {
