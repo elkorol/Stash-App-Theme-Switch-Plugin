@@ -13393,6 +13393,11 @@ input[type=range].filter-slider:active:focus:hover::-ms-thumb {
 input[type=range]::-ms-tooltip {
     display: none;
 }
+
+.top-nav:has(.dropdown-menu.theme-plugin-menu.show) {
+    overflow: visible !important;
+}
+
 /* *** */
 
 /* - */
